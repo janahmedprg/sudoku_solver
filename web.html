@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>9x9 Grid Input</title>
+    <style>
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        text-align: center;
+        border: 1px solid black;
+      }
+      td.thick-top {
+        border-top-width: 3px;
+      }
+      td.thick-left {
+        border-left-width: 3px;
+      }
+      td.thick-right {
+        border-right-width: 3px;
+      }
+      td.thick-bottom {
+        border-bottom-width: 3px;
+      }
+      td.cell > input {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 18px;
+        border-width: 0px;
+      }
+      td.cell > p {
+        width: 44px;
+        height: 44px;
+        text-align: center;
+        font-size: 20px;
+        border-width: 0px;
+        margin: 0;
+        align-content: center;
+      }
+
+      button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .loader {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+      }
+      .loader.visible {
+        display: block;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .unsolve {
+        display: none;
+        font-size: 16px;
+        color: red;
+      }
+      .unsolve.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body style="text-align: center">
+    <h1>Sudoku Solver</h1>
+    <h2>Input Sudoku:</h2>
+    <div
+      style="
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+      "
+    >
+      <table>
+        <tr>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C11" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C12" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C13" />
+          </td>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C14" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C15" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C16" />
+          </td>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C17" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C18" />
+          </td>
+          <td class="thick-right thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C19" />
+          </td>
+        </tr>
+        <tr>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C21" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C22" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C23" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C24" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C25" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C26" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C27" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C28" />
+          </td>
+          <td class="thick-right cell">
+            <input type="number" min="1" max="9" value="" id="user-C29" />
+          </td>
+        </tr>
+        <tr>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C31" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C32" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C33" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C34" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C35" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C36" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C37" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C38" />
+          </td>
+          <td class="thick-right cell">
+            <input type="number" min="1" max="9" value="" id="user-C39" />
+          </td>
+        </tr>
+        <tr>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C41" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C42" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C43" />
+          </td>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C44" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C45" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C46" />
+          </td>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C47" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C48" />
+          </td>
+          <td class="thick-right thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C49" />
+          </td>
+        </tr>
+        <tr>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C51" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C52" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C53" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C54" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C55" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C56" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C57" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C58" />
+          </td>
+          <td class="thick-right cell">
+            <input type="number" min="1" max="9" value="" id="user-C59" />
+          </td>
+        </tr>
+        <tr>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C61" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C62" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C63" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C64" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C65" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C66" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C67" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C68" />
+          </td>
+          <td class="thick-right cell">
+            <input type="number" min="1" max="9" value="" id="user-C69" />
+          </td>
+        </tr>
+        <tr>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C71" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C72" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C73" />
+          </td>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C74" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C75" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C76" />
+          </td>
+          <td class="thick-top thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C77" />
+          </td>
+          <td class="thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C78" />
+          </td>
+          <td class="thick-right thick-top cell">
+            <input type="number" min="1" max="9" value="" id="user-C79" />
+          </td>
+        </tr>
+        <tr>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C81" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C82" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C83" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C84" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C85" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C86" />
+          </td>
+          <td class="thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C87" />
+          </td>
+          <td class="cell">
+            <input type="number" min="1" max="9" value="" id="user-C88" />
+          </td>
+          <td class="thick-right cell">
+            <input type="number" min="1" max="9" value="" id="user-C89" />
+          </td>
+        </tr>
+        <tr>
+          <td class="thick-bottom thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C91" />
+          </td>
+          <td class="thick-bottom cell">
+            <input type="number" min="1" max="9" value="" id="user-C92" />
+          </td>
+          <td class="thick-bottom cell">
+            <input type="number" min="1" max="9" value="" id="user-C93" />
+          </td>
+          <td class="thick-bottom thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C94" />
+          </td>
+          <td class="thick-bottom cell">
+            <input type="number" min="1" max="9" value="" id="user-C95" />
+          </td>
+          <td class="thick-bottom cell">
+            <input type="number" min="1" max="9" value="" id="user-C96" />
+          </td>
+          <td class="thick-bottom thick-left cell">
+            <input type="number" min="1" max="9" value="" id="user-C97" />
+          </td>
+          <td class="thick-bottom cell">
+            <input type="number" min="1" max="9" value="" id="user-C98" />
+          </td>
+          <td class="thick-right thick-bottom cell">
+            <input type="number" min="1" max="9" value="" id="user-C99" />
+          </td>
+        </tr>
+      </table>
+    </div>
+    <button style="margin-bottom: 20px" onclick="solveSudoku()">
+      Solve Sudoku
+    </button>
+    <div class="loader" id="loader"></div>
+    <h2>Solved Sudoku:</h2>
+    <p class="unsolve" id="unsolve">
+      This sudoku is unsolvable!!! Please type in a new sudoku and press "Solve
+      Sudoku".
+    </p>
+    <div
+      style="
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+      "
+    >
+      <table>
+        <tr>
+          <td class="thick-top thick-left cell"><p id="C11"></p></td>
+          <td class="thick-top cell"><p id="C12"></p></td>
+          <td class="thick-top cell"><p id="C13"></p></td>
+          <td class="thick-top thick-left cell"><p id="C14"></p></td>
+          <td class="thick-top cell"><p id="C15"></p></td>
+          <td class="thick-top cell"><p id="C16"></p></td>
+          <td class="thick-top thick-left cell"><p id="C17"></p></td>
+          <td class="thick-top cell"><p id="C18"></p></td>
+          <td class="thick-right thick-top cell"><p id="C19"></p></td>
+        </tr>
+        <tr>
+          <td class="thick-left cell"><p id="C21"></p></td>
+          <td class="cell"><p id="C22"></p></td>
+          <td class="cell"><p id="C23"></p></td>
+          <td class="thick-left cell"><p id="C24"></p></td>
+          <td class="cell"><p id="C25"></p></td>
+          <td class="cell"><p id="C26"></p></td>
+          <td class="thick-left cell"><p id="C27"></p></td>
+          <td class="cell"><p id="C28"></p></td>
+          <td class="thick-right cell"><p id="C29"></p></td>
+        </tr>
+        <tr>
+          <td class="thick-left cell"><p id="C31"></p></td>
+          <td class="cell"><p id="C32"></p></td>
+          <td class="cell"><p id="C33"></p></td>
+          <td class="thick-left cell"><p id="C34"></p></td>
+          <td class="cell"><p id="C35"></p></td>
+          <td class="cell"><p id="C36"></p></td>
+          <td class="thick-left cell"><p id="C37"></p></td>
+          <td class="cell"><p id="C38"></p></td>
+          <td class="thick-right cell"><p id="C39"></p></td>
+        </tr>
+        <tr>
+          <td class="thick-top thick-left cell"><p id="C41"></p></td>
+          <td class="thick-top cell"><p id="C42"></p></td>
+          <td class="thick-top cell"><p id="C43"></p></td>
+          <td class="thick-top thick-left cell"><p id="C44"></p></td>
+          <td class="thick-top cell"><p id="C45"></p></td>
+          <td class="thick-top cell"><p id="C46"></p></td>
+          <td class="thick-top thick-left cell"><p id="C47"></p></td>
+          <td class="thick-top cell"><p id="C48"></p></td>
+          <td class="thick-right thick-top cell"><p id="C49"></p></td>
+        </tr>
+        <tr>
+          <td class="thick-left cell"><p id="C51"></p></td>
+          <td class="cell"><p id="C52"></p></td>
+          <td class="cell"><p id="C53"></p></td>
+          <td class="thick-left cell"><p id="C54"></p></td>
+          <td class="cell"><p id="C55"></p></td>
+          <td class="cell"><p id="C56"></p></td>
+          <td class="thick-left cell"><p id="C57"></p></td>
+          <td class="cell"><p id="C58"></p></td>
+          <td class="thick-right cell"><p id="C59"></p></td>
+        </tr>
+        <tr>
+          <td class="thick-left cell"><p id="C61"></p></td>
+          <td class="cell"><p id="C62"></p></td>
+          <td class="cell"><p id="C63"></p></td>
+          <td class="thick-left cell"><p id="C64"></p></td>
+          <td class="cell"><p id="C65"></p></td>
+          <td class="cell"><p id="C66"></p></td>
+          <td class="thick-left cell"><p id="C67"></p></td>
+          <td class="cell"><p id="C68"></p></td>
+          <td class="thick-right cell"><p id="C69"></p></td>
+        </tr>
+        <tr>
+          <td class="thick-top thick-left cell"><p id="C71"></p></td>
+          <td class="thick-top cell"><p id="C72"></p></td>
+          <td class="thick-top cell"><p id="C73"></p></td>
+          <td class="thick-top thick-left cell"><p id="C74"></p></td>
+          <td class="thick-top cell"><p id="C75"></p></td>
+          <td class="thick-top cell"><p id="C76"></p></td>
+          <td class="thick-top thick-left cell"><p id="C77"></p></td>
+          <td class="thick-top cell"><p id="C78"></p></td>
+          <td class="thick-right thick-top cell"><p id="C79"></p></td>
+        </tr>
+        <tr>
+          <td class="thick-left cell"><p id="C81"></p></td>
+          <td class="cell"><p id="C82"></p></td>
+          <td class="cell"><p id="C83"></p></td>
+          <td class="thick-left cell"><p id="C84"></p></td>
+          <td class="cell"><p id="C85"></p></td>
+          <td class="cell"><p id="C86"></p></td>
+          <td class="thick-left cell"><p id="C87"></p></td>
+          <td class="cell"><p id="C88"></p></td>
+          <td class="thick-right cell"><p id="C89"></p></td>
+        </tr>
+        <tr>
+          <td class="thick-bottom thick-left cell"><p id="C91"></p></td>
+          <td class="thick-bottom cell"><p id="C92"></p></td>
+          <td class="thick-bottom cell"><p id="C93"></p></td>
+          <td class="thick-bottom thick-left cell"><p id="C94"></p></td>
+          <td class="thick-bottom cell"><p id="C95"></p></td>
+          <td class="thick-bottom cell"><p id="C96"></p></td>
+          <td class="thick-bottom thick-left cell"><p id="C97"></p></td>
+          <td class="thick-bottom cell"><p id="C98"></p></td>
+          <td class="thick-right thick-bottom cell"><p id="C99"></p></td>
+        </tr>
+      </table>
+    </div>
+    <div
+      style="
+        display: flex;
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+      "
+    >
+      <button onclick="fullBack()"><<</button>
+      <button onclick="back()"><</button>
+      <button onclick="next()">></button>
+      <button onclick="fullNext()">>></button>
+    </div>
+    <div
+      style="
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+      "
+    >
+      <p id="count"></p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      var sol = [];
+      var counter = 0;
+      function solveSudoku() {
+        showLoader();
+        hideUnsolve();
+        var sudokuGrid = [];
+        sol = [];
+        for (var i = 1; i <= 9; i++) {
+          var row = [];
+          for (var j = 1; j <= 9; j++) {
+            var inputValue = document.getElementById("user-C" + i + j).value;
+            if (inputValue === "") {
+              inputValue = null;
+            } else {
+              inputValue = parseInt(inputValue);
+              document.getElementById("C" + i + j).textContent = inputValue;
+            }
+            row.push(inputValue);
+          }
+          sudokuGrid.push(row);
+        }
+        const url = "http://127.0.0.1:5000/solve";
+        $.ajax({
+          type: "POST",
+          url: url,
+          contentType: "application/json",
+          data: JSON.stringify({ sudokuGrid: sudokuGrid }), // Convert sudokuGrid to JSON string
+          success: function (response) {
+            console.log("Server response:", response);
+            sol = response;
+            if (sol === "false") {
+              hideLoader();
+              showUnsolve();
+            } else {
+              response.map((cell) => {
+                document.getElementById(cell[0]).textContent = cell[1];
+              });
+              counter = sol.length - 1;
+              document.getElementById("count").textContent =
+                "Step " + sol.length + " out of " + sol.length + " steps.";
+              hideLoader();
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("Error:", error);
+          },
+        });
+      }
+      function fullBack() {
+        sol.map((cell) => {
+          document.getElementById(cell[0]).textContent = "";
+        });
+        counter = -1;
+        document.getElementById("count").textContent =
+          "Step " + (counter + 1) + " out of " + sol.length + " steps.";
+      }
+      function back() {
+        if (counter < 0) {
+          return;
+        }
+        document.getElementById(sol[counter][0]).textContent = "";
+        document.getElementById("count").textContent =
+          "Step " + counter + " out of " + sol.length + " steps.";
+        counter -= 1;
+      }
+      function next() {
+        if (counter === sol.length - 1) {
+          document.getElementById(sol[counter][0]).textContent =
+            sol[counter][1];
+          document.getElementById("count").textContent =
+            "Step " + (counter + 1) + " out of " + sol.length + " steps.";
+          return;
+        }
+        counter += 1;
+        document.getElementById(sol[counter][0]).textContent = sol[counter][1];
+        document.getElementById("count").textContent =
+          "Step " + (counter + 1) + " out of " + sol.length + " steps.";
+      }
+      function fullNext() {
+        sol.map((cell) => {
+          document.getElementById(cell[0]).textContent = cell[1];
+        });
+        counter = sol.length - 1;
+        document.getElementById("count").textContent =
+          "Step " + (counter + 1) + " out of " + sol.length + " steps.";
+      }
+      function showLoader() {
+        document.getElementById("loader").classList.add("visible");
+      }
+
+      function hideLoader() {
+        document.getElementById("loader").classList.remove("visible");
+      }
+      function showUnsolve() {
+        document.getElementById("unsolve").classList.add("visible");
+      }
+
+      function hideUnsolve() {
+        document.getElementById("unsolve").classList.remove("visible");
+      }
+    </script>
+  </body>
+</html>
