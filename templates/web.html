@@ -547,7 +547,7 @@
           body: JSON.stringify({ sudokuGrid: sudokuGrid }),
         })
           .then((response) => {
-            consol.log(response);
+            console.log(response);
             sol = response;
             if (sol === "false") {
               hideLoader();
