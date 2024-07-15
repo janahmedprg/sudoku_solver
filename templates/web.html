@@ -546,14 +546,15 @@
           },
           body: JSON.stringify({ sudokuGrid: sudokuGrid }),
         })
-          .then((response) => {
-            console.log(response);
-            sol = response;
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            sol = data;
             if (sol === "false") {
               hideLoader();
               showUnsolve();
             } else {
-              response.map((cell) => {
+              data.map((cell) => {
                 document.getElementById(cell[0]).textContent = cell[1];
               });
               counter = sol.length - 1;
