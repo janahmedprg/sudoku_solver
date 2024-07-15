@@ -1,12 +1,12 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from program2 import backtrack_search, Sudoku
 from sudoku_constraints9x9 import constraint9x9
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+def index(name=None):
+    return render_template('web.html', name=name)
 
 @app.route('/solve', methods=['POST'])
 def solve_sudoku():
