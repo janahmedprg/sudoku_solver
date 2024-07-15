@@ -539,14 +539,15 @@
           }
           sudokuGrid.push(row);
         }
-        const url = "http://127.0.0.1:5000/solve";
-        $.ajax({
-          type: "POST",
-          url: url,
-          contentType: "application/json",
-          data: JSON.stringify({ sudokuGrid: sudokuGrid }), // Convert sudokuGrid to JSON string
-          success: function (response) {
-            console.log("Server response:", response);
+        fetch("/solve", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sudokuGrid: sudokuGrid }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
             sol = response;
             if (sol === "false") {
               hideLoader();
@@ -560,12 +561,12 @@
                 "Step " + sol.length + " out of " + sol.length + " steps.";
               hideLoader();
             }
-          },
-          error: function (xhr, status, error) {
+          })
+          .catch((error) => {
             console.error("Error:", error);
-          },
-        });
+          });
       }
+
       function fullBack() {
         sol.map((cell) => {
           document.getElementById(cell[0]).textContent = "";
